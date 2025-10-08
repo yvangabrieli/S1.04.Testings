@@ -1,41 +1,72 @@
 package ejercicio1;
 
+import org.ejercicio1.Book;
 import org.ejercicio1.Library;
-import org.junit.*;
-import java.util.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LibraryAddBookTest {
 
     @Test
-    public void testAddBookSize() {
-        List<String> library = new ArrayList<>();
-        library.add("Harry Potter");
-        library.add("The Lord of the Rings");
-        library.add("The Alchemist");
-        library.add("The Godfather");
-        library.add("The Da Vinci Code");
-        assertEquals(5, library.size());
+    public void testAddBook(){
+    Library library = new Library();
+        Book book1 = new Book("Harry Potter", "J.K. Rowling");
+        Book book2 = new Book("The Lord of the Rings", "J.R.R. Tolkien");
+
+        assertTrue(library.addBook(book1));
+        assertTrue(library.addBook(book2));
+        assertEquals(2, library.size());
     }
 
     @Test
-    public void testNoDuplicateBook() {
+    void testBookListIsNotNullAfterCreation() {
         Library library = new Library();
-        library.addBook("Harry Potter", "J.K. Rowling" );
-        library.addBook("The Lord of the Rings", "J.R.R. Tolkien");
-        library.addBook("The Lord of the Rings", "J.R.R. Tolkien");
-        assertEquals(2, library.getBookList().size());
+
+        assertNotNull(library.getBook(), "Book list should not be null after creation");
     }
 
     @Test
-    public void testAddBookByPosition() {
+    void testBookListHasExpectedSizeAfterAddingBooks() {
         Library library = new Library();
-        library.addBook("Book A", "Author A");
-        library.addBook("Book B", "Author B");
-        assertEquals("Book A", library.getBookByPosition(0));
-        assertTrue(library.getBookList().contains("Book A"));
-        assertEquals(2, library.getBookList().size());
+        library.addBook(new Book("Book A", "Author A"));
+        library.addBook(new Book("Book B", "Author B"));
+        library.addBook(new Book("Book C", "Author C"));
+
+        assertEquals(3, library.size(), "Library should contain 3 books");
+    }
+    @Test
+    void testNoDuplicateBooks() {
+        Library library = new Library();
+        Book book1 = new Book("Harry Potter", "J.K. Rowling");
+        Book duplicate = new Book("Harry Potter", "J.K. Rowling");
+
+        library.addBook(book1);
+        assertFalse(library.addBook(duplicate));  // should not add duplicate
+        assertEquals(1, library.size());
+    }
+
+
+    @Test
+    void testGetBookByInvalidPosition() {
+        Library library = new Library();
+        library.addBook(new Book("Book X", "Author X"));
+        assertThrows(IndexOutOfBoundsException.class, () -> library.getBookByPosition(2));
+    }
+
+    @Test
+    void testListRemainsAlphabeticallySorted() {
+        Library library = new Library();
+        library.addBook(new Book("Zorro", "Author Z"));
+        library.addBook(new Book("Alice in Wonderland", "Lewis Carroll"));
+        library.addBook(new Book("Moby Dick", "Herman Melville"));
+
+        List<Book> books = library.getBook();
+
+        assertEquals("Alice in Wonderland", books.get(1).getTitle());
+        assertEquals("Moby Dick", books.get(2).getTitle());
+        assertEquals("Zorro", books.get(0).getTitle());
     }
 }

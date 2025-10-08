@@ -1,41 +1,37 @@
 package ejercicio1;
 
+import org.ejercicio1.Book;
 import org.ejercicio1.Library;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 public class LibraryRetrieveBookTest {
     @Test
-    public void testGetBookListNotEmpty() {
+    void testGetBookByPosition() {
         Library library = new Library();
-        ArrayList<String> books = library.getBookList();
-        assertNotNull(books);
+        Book bookA = new Book("Book A", "Author A");
+        Book bookB = new Book("Book B", "Author B");
+
+        library.addBook(bookA);
+        library.addBook(bookB);
+
+        Assertions.assertEquals("bookA", library.getBookByPosition(0));
+        Assertions.assertEquals("Book B", library.getBookByPosition(1).getTitle());
     }
 
-    @Test
-    public void testGetBookByPosition() {
-        Library library = new Library();
-        library.addBook("Harry Potter", " J.K. Rowling");
-        library.addBook("The Lord of the Rings", "J.R.R. Tolkien");
-        library.addBook("The Alchemist", "Alchim Buraj");
-        assertEquals("Harry Potter", library.getBookByPosition(0));
-        assertEquals("The Alchemist", library.getBookByPosition(1));
-        assertNull(library.getBookByPosition(10));
-    }
+
 
     @Test
-    public void testGetSortedBookList() {
-        Library library = new Library();
-        library.addBook("C Book", "Author C");
-        library.addBook("A Book",  "Author A");
-        library.addBook("B Book",   "Author B");
-        ArrayList<String> books = library.getBookList();
-        assertEquals("A Book", books.get(0));
-        assertEquals("B Book", books.get(1));
-        assertEquals("C Book", books.get(2));
+    void testInvalidBookCreation() {
+        assertThrows(IllegalArgumentException.class, () -> new Book("", "Author"));
+        assertThrows(IllegalArgumentException.class, () -> new Book("Title", null));
     }
+
+
 }
-
