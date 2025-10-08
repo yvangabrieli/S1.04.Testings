@@ -9,9 +9,9 @@ public class IdCalculation {
         if (numberId < 0 && numberId > 99999999) {
             throw new IllegalArgumentException("The number of ID cannot be negative or superior to 8 digit");
         }
-            int index = numberId % 23; // remainder after dividing by 23
-            return LETTERS[index];    // return the corresponding letter
-        }
+        int index = numberId % 23; // remainder after dividing by 23
+        return LETTERS[index];    // return the corresponding letter
     }
+}
 
 
