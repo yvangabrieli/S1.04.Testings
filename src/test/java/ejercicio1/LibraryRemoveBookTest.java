@@ -2,8 +2,10 @@ package ejercicio1;
 
 
 
+import org.ejercicio1.Book;
 import org.ejercicio1.Library;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -11,22 +13,15 @@ import static org.testng.Assert.assertTrue;
 
 
 public class LibraryRemoveBookTest {
-
     @Test
-    public void testRemoveBook() {
+    void testRemoveBookByTitle() {
         Library library = new Library();
-        library.addBook("Harry Potter", "J.K. Rowling");
-        library.addBook("The Lord of the Rings", "J.R.R. Tolkien");
-        assertTrue(library.removeBook("Harry Potter"));
-        assertFalse(library.getBookList().contains("Harry Potter"));
-        assertEquals(1, library.getBookList().size());
+        library.addBook(new Book("The Alchemist", "Paulo Coelho"));
+        library.addBook(new Book("The Godfather", "Mario Puzo"));
+
+        Assertions.assertTrue(library.removeBookByTitle("The Alchemist"));
+        Assertions.assertEquals(1, library.size());
+        Assertions.assertFalse(library.removeBookByTitle("Unknown Book"));
     }
 
-    @Test
-    public void testRemoveNonExistentBook() {
-        Library library = new Library();
-        library.addBook("Book A", "Author A");
-        assertFalse(library.removeBook("Book B"));
-        assertEquals(1, library.getBookList().size());
-    }
 }
